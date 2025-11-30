@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, ShoppingCart, BarChart2, Plus } from 'lucide-react';
+import { Play, Pause, Plus, ShoppingCart, BarChart2 } from 'lucide-react';
 import { Track } from '../types';
 import { usePlayer } from '../context/PlayerContext';
 import { useCart } from '../context/CartContext';
@@ -20,83 +20,87 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
     addToCart(beat, 'MP3');
   };
 
-  const [genre, bpm] = beat.description ? beat.description.split('•').map(s => s.trim()) : ['Trap', '140 BPM'];
-
   return (
-    <motion.div 
-      className="group relative flex flex-col gap-0 w-full bg-transparent"
-      whileHover={{ y: -8 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    <motion.div
+      className="group relative w-full cursor-pointer"
+      initial="rest"
+      whileHover="hover"
+      onClick={() => playTrack(beat)}
     >
-      {/* Artwork Container */}
-      <div 
-        className="relative aspect-square w-full overflow-hidden rounded-lg bg-[#111] cursor-pointer shadow-lg group-hover:shadow-[0_20px_40px_-10px_rgba(225,6,0,0.3)] transition-all duration-500 border border-white/5 group-hover:border-brand-red/30"
-        onClick={() => playTrack(beat)}
-      >
-        <img 
-          src={beat.cover} 
-          alt={beat.title} 
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1 filter grayscale-[0.2] group-hover:grayscale-0"
+      {/* Image Container */}
+      <div className="relative aspect-square overflow-hidden rounded-sm bg-[#111] shadow-2xl">
+        <motion.img
+          src={beat.cover}
+          alt={beat.title}
+          className="h-full w-full object-cover opacity-90 transition-opacity duration-500 group-hover:opacity-70"
+          variants={{
+            rest: { scale: 1 },
+            hover: { scale: 1.1, transition: { duration: 0.6, ease: "easeOut" } }
+          }}
           loading="lazy"
         />
-        
-        {/* Cinematic Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
 
-        {/* Play Button Overlay - Centered */}
-        <div className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${isActuallyPlaying ? 'opacity-100 bg-black/40' : 'opacity-0 group-hover:opacity-100 backdrop-blur-[2px]'}`}>
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-red text-white shadow-[0_0_30px_rgba(225,6,0,0.6)] transform scale-90 group-hover:scale-100 transition-all duration-300">
-            {isActuallyPlaying ? (
-              <Pause size={28} fill="currentColor" />
-            ) : (
-              <Play size={28} fill="currentColor" className="ml-1" />
-            )}
-          </div>
+        {/* Cinematic Noise/Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-brand-red/0 group-hover:bg-brand-red/10 transition-colors duration-500 mix-blend-overlay" />
+        
+        {/* Play Button */}
+        <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div 
+                className={`flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-300 shadow-[0_0_30px_rgba(0,0,0,0.5)] ${isActuallyPlaying ? 'scale-100 opacity-100 bg-brand-red/80 border-brand-red' : 'scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100'}`}
+            >
+                 {isActuallyPlaying ? (
+                  <Pause size={28} className="text-white" fill="currentColor" />
+                ) : (
+                  <Play size={28} className="text-white ml-1" fill="currentColor" />
+                )}
+            </motion.div>
         </div>
 
-        {/* Status Badge */}
+        {/* Top Right Actions */}
+        <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+             <motion.button
+                variants={{
+                    rest: { opacity: 0, x: 10 },
+                    hover: { opacity: 1, x: 0, transition: { delay: 0.1 } }
+                }}
+                onClick={handleAddToCart}
+                className="flex items-center justify-center h-10 w-10 bg-white text-brand-black rounded-full shadow-lg hover:bg-brand-red hover:text-white transition-all duration-300"
+                title="Add to Cart"
+             >
+                <Plus size={20} />
+             </motion.button>
+        </div>
+        
+        {/* Playing Indicator */}
         {isCurrent && (
-           <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-brand-red/50 text-brand-red text-[10px] font-bold uppercase tracking-widest rounded-full shadow-xl z-10">
-              <BarChart2 size={12} className="animate-pulse" /> Playing
-           </div>
+            <div className="absolute top-3 left-3 px-3 py-1 bg-brand-red text-white text-[9px] font-bold uppercase tracking-widest flex items-center gap-1 rounded-full shadow-lg z-10">
+                <BarChart2 size={10} className="animate-pulse"/> Playing
+            </div>
         )}
-
-        {/* Quick Action - Top Right */}
-        <button
-          onClick={handleAddToCart}
-          className="absolute top-4 right-4 p-3 bg-white text-black hover:bg-brand-red hover:text-white rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10"
-          title="Add to Cart"
-        >
-          <ShoppingCart size={16} />
-        </button>
       </div>
 
-      {/* Info Section - Clean & Minimal */}
-      <div className="pt-5 px-1 flex flex-col gap-1">
-         <div className="flex justify-between items-end">
-            <h3 
-              className="text-2xl font-black text-white uppercase tracking-tighter leading-none group-hover:text-brand-red transition-colors cursor-pointer"
-              onClick={() => playTrack(beat)}
-            >
-               {beat.title}
-            </h3>
-            <span className="text-xl font-bold text-brand-red tracking-tight font-mono">${beat.price}</span>
-         </div>
-         
-         <div className="flex justify-between items-center mt-2 border-t border-white/10 pt-3">
-            <div className="flex gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gray/60">
-               <span>{genre}</span>
-               <span className="text-brand-red/50">•</span>
-               <span>{bpm}</span>
+      {/* Details */}
+      <div className="mt-5 flex flex-col gap-1 px-1">
+        <div className="flex items-end justify-between border-b border-white/10 pb-3 mb-2">
+           <h3 className="text-2xl font-black uppercase tracking-tighter text-white group-hover:text-brand-red transition-colors duration-300 line-clamp-1">
+             {beat.title}
+           </h3>
+           <span className="font-mono text-xl font-bold text-brand-red tracking-tight">${beat.price}</span>
+        </div>
+        <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                <span>{beat.description?.split('•')[0] || 'Trap'}</span>
+                <span className="text-brand-red">•</span>
+                <span>{beat.description?.split('•')[1] || '140 BPM'}</span>
             </div>
-            
             <button 
-               onClick={handleAddToCart}
-               className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors flex items-center gap-1 group/txt"
+                onClick={handleAddToCart}
+                className="text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors flex items-center gap-1"
             >
-               Add <Plus size={12} className="group-hover/txt:rotate-90 transition-transform duration-300" />
+                <ShoppingCart size={12} /> Buy
             </button>
-         </div>
+        </div>
       </div>
     </motion.div>
   );
