@@ -24,12 +24,12 @@ export const BackgroundParticles: React.FC = () => {
       constructor(w: number, h: number) {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        // Smaller, sharper particles
-        this.size = Math.random() * 0.6 + 0.1; 
-        // Faster, more energetic movement
-        this.speedX = (Math.random() - 0.5) * 0.5; 
-        this.speedY = (Math.random() - 0.5) * 0.5; 
-        // Lower max opacity for subtlety
+        // Very small dust
+        this.size = Math.random() * 0.8 + 0.1; 
+        // Slow drift
+        this.speedX = (Math.random() - 0.5) * 0.1; 
+        this.speedY = (Math.random() - 0.5) * 0.1; 
+        // Faint
         this.opacity = Math.random() * 0.3 + 0.05;
       }
 
@@ -56,8 +56,8 @@ export const BackgroundParticles: React.FC = () => {
       if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      // Increased density slightly for better texture, but keeping them small
-      const particleCount = Math.floor((canvas.width * canvas.height) / 8000); 
+      // Sparse density
+      const particleCount = Math.floor((canvas.width * canvas.height) / 15000); 
       particles = [];
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle(canvas.width, canvas.height));
@@ -86,5 +86,5 @@ export const BackgroundParticles: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-40 mix-blend-screen" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-30" />;
 };

@@ -10,6 +10,10 @@ interface PlayerContextType {
   progress: number;
   duration: number;
   seek: (time: number) => void;
+  volume: number;
+  isMuted: boolean;
+  changeVolume: (volume: number) => void;
+  toggleMute: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -19,6 +23,8 @@ export const PlayerProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =>
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -26,6 +32,8 @@ export const PlayerProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =>
     audioRef.current = new Audio();
     
     const audio = audioRef.current;
+    // Set initial volume
+    audio.volume = isMuted ? 0 : volume;
 
     const updateProgress = () => {
       setProgress(audio.currentTime);
@@ -51,6 +59,13 @@ export const PlayerProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =>
       audio.pause();
     };
   }, []);
+
+  // Sync volume with audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
 
   const playTrack = (track: Track) => {
     if (!audioRef.current) return;
@@ -93,6 +108,18 @@ export const PlayerProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =>
     }
   };
 
+  const changeVolume = (newVolume: number) => {
+    const clamped = Math.max(0, Math.min(1, newVolume));
+    setVolume(clamped);
+    if (clamped > 0 && isMuted) {
+      setIsMuted(false);
+    }
+  };
+
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev);
+  };
+
   return (
     <PlayerContext.Provider value={{
       currentTrack,
@@ -102,7 +129,11 @@ export const PlayerProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =>
       togglePlay,
       progress,
       duration,
-      seek
+      seek,
+      volume,
+      isMuted,
+      changeVolume,
+      toggleMute
     }}>
       {children}
     </PlayerContext.Provider>

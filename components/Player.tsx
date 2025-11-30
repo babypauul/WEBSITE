@@ -1,10 +1,21 @@
 import React from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, Maximize2 } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, Volume1, VolumeX, Maximize2 } from 'lucide-react';
 import { usePlayer } from '../context/PlayerContext';
 import { motion } from 'framer-motion';
 
 export const Player: React.FC = () => {
-  const { currentTrack, isPlaying, togglePlay, progress, duration, seek } = usePlayer();
+  const { 
+    currentTrack, 
+    isPlaying, 
+    togglePlay, 
+    progress, 
+    duration, 
+    seek, 
+    volume, 
+    isMuted, 
+    changeVolume, 
+    toggleMute 
+  } = usePlayer();
 
   if (!currentTrack) return null;
 
@@ -19,14 +30,23 @@ export const Player: React.FC = () => {
     seek(Number(e.target.value));
   };
 
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changeVolume(Number(e.target.value));
+  };
+
   const progressPercent = duration ? (progress / duration) * 100 : 0;
+  const volumePercent = isMuted ? 0 : volume * 100;
 
   return (
     <motion.div 
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-0 left-0 right-0 h-[90px] bg-[#0A0A0A]/90 backdrop-blur-xl border-t border-white/10 z-50 px-4 md:px-8 flex items-center justify-between shadow-[0_-10px_40px_rgba(0,0,0,0.6)]"
+      className="fixed bottom-0 left-0 right-0 bg-[#0A0A0A]/90 backdrop-blur-xl border-t border-white/10 z-50 px-4 md:px-8 flex items-center justify-between shadow-[0_-10px_40px_rgba(0,0,0,0.6)]"
+      style={{
+        height: 'calc(90px + env(safe-area-inset-bottom))',
+        paddingBottom: 'env(safe-area-inset-bottom)'
+      }}
     >
       {/* Glowing Line on Top */}
       <div className="absolute top-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-brand-red to-transparent w-full opacity-50" />
@@ -38,6 +58,7 @@ export const Player: React.FC = () => {
             src={currentTrack.cover} 
             alt={currentTrack.title} 
             className="w-14 h-14 object-cover rounded-md shadow-lg border border-white/10"
+            loading="lazy"
           />
            {/* Now Playing Visualizer */}
            {isPlaying && (
@@ -100,6 +121,7 @@ export const Player: React.FC = () => {
               value={progress}
               onChange={handleSeek}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              aria-label="Seek"
             />
           </div>
 
@@ -109,10 +131,30 @@ export const Player: React.FC = () => {
 
       {/* Volume / Extras */}
       <div className="w-1/4 md:w-1/3 flex justify-end items-center gap-6 pr-2">
-        <div className="hidden md:flex items-center gap-3 group w-32">
-           <Volume2 size={16} className="text-brand-gray group-hover:text-white transition-colors" />
-           <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
-             <div className="w-3/4 h-full bg-brand-gray group-hover:bg-brand-red transition-colors"></div>
+        <div className="hidden md:flex items-center gap-3 group w-32 relative">
+           <button 
+             onClick={toggleMute}
+             className="text-brand-gray group-hover:text-white transition-colors focus:outline-none"
+             aria-label={isMuted ? "Unmute" : "Mute"}
+           >
+             {isMuted || volume === 0 ? <VolumeX size={18} /> : volume < 0.5 ? <Volume1 size={18} /> : <Volume2 size={18} />}
+           </button>
+           <div className="relative flex-1 h-1 bg-white/10 rounded-full overflow-hidden group/vol cursor-pointer">
+             <div 
+               className="h-full bg-brand-gray group-hover:bg-brand-red transition-colors relative"
+               style={{ width: `${volumePercent}%` }}
+             >
+             </div>
+             <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={isMuted ? 0 : volume}
+                onChange={handleVolumeChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                aria-label="Volume"
+              />
            </div>
         </div>
         <button className="text-brand-gray hover:text-brand-red transition-colors p-2 hover:bg-white/5 rounded-full">

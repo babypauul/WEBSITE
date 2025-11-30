@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export const CustomCursor: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   
@@ -15,6 +16,15 @@ export const CustomCursor: React.FC = () => {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    // Only show custom cursor on devices with a mouse (fine pointer)
+    const checkDevice = () => {
+      const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      setIsVisible(isDesktop);
+    };
+
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX); 
       cursorY.set(e.clientY);
@@ -41,20 +51,25 @@ export const CustomCursor: React.FC = () => {
     const handleMouseUp = () => setIsClicking(false);
     const handleMouseOut = () => setIsHovering(false);
 
-    window.addEventListener('mousemove', moveCursor);
-    document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mouseout', handleMouseOut);
+    if (isVisible) {
+      window.addEventListener('mousemove', moveCursor);
+      document.addEventListener('mouseover', handleMouseOver);
+      document.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mouseout', handleMouseOut);
+    }
 
     return () => {
+      window.removeEventListener('resize', checkDevice);
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseout', handleMouseOut);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isVisible]);
+
+  if (!isVisible) return null;
 
   return (
     <>

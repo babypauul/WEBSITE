@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-[#0A0A0A] text-[#F5F5F5] antialiased scroll-smooth">
+<html lang="en" class="bg-[#050505] text-[#F5F5F5] antialiased scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E10600'/%3E%3Crect x='25' y='25' width='50' height='50' fill='%230A0A0A'/%3E%3C/svg%3E" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Babypauul - Killstreet Studio. Premium Beats & Audio Engineering." />
+    
+    <!-- Viewport fit=cover is essential for full-bleed mobile experience (iPhone notch/home bar) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <!-- SEO & Metadata -->
     <title>Babypauul | Killstreet Studio</title>
+    <meta name="description" content="Babypauul - Killstreet Studio. Premium Beats, Audio Engineering, and Sound Design. The sound of the underground." />
+    <meta name="keywords" content="Babypauul, Killstreet Studio, Beats for Sale, Trap Beats, Audio Engineer, Music Producer" />
+    <meta name="author" content="Babypauul" />
+    <meta name="theme-color" content="#050505" />
+
+    <!-- Open Graph / Facebook / Instagram / iMessage -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://babypauul.it/" />
+    <meta property="og:title" content="Babypauul | Killstreet Studio" />
+    <meta property="og:description" content="Defining the sound of the underground. Premium beats, mixing, and mastering." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://babypauul.it/" />
+    <meta property="twitter:title" content="Babypauul | Killstreet Studio" />
+    <meta property="twitter:description" content="Defining the sound of the underground. Premium beats, mixing, and mastering." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" />
     
     <!-- Google Fonts: Inter & Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,9 +41,9 @@
           extend: {
             colors: {
               brand: {
-                black: '#0A0A0A',
+                black: '#050505',
                 red: '#E10600',
-                dark: '#121212',
+                dark: '#0A0A0A',
                 gray: '#BDBDBD',
                 light: '#F5F5F5',
               }
@@ -51,11 +72,9 @@
         margin: 0;
         overflow-x: hidden;
         cursor: none; /* Hide default cursor */
-        background-color: #0A0A0A;
-        /* Subtle deep red/black radial gradient for depth */
-        background-image: 
-          radial-gradient(circle at 50% -10%, #1c0505 0%, #0A0A0A 45%),
-          radial-gradient(circle at 100% 50%, #0f0f0f 0%, #0A0A0A 50%);
+        background-color: #050505;
+        /* Clean gradient: just a hint of light at the top for depth */
+        background-image: radial-gradient(circle at 50% 0%, #151515 0%, #050505 60%);
         background-attachment: fixed;
         color: #F5F5F5;
         -webkit-tap-highlight-color: transparent;
@@ -80,8 +99,8 @@
         height: 100%;
         pointer-events: none;
         z-index: 40; /* Lower than custom cursor but above content */
-        opacity: 0.05;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
       }
 
       /* Custom Scrollbar */
@@ -89,7 +108,7 @@
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0A0A0A;
+        background: #050505;
       }
       ::-webkit-scrollbar-thumb {
         background: #333;
@@ -107,7 +126,9 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4"
   }
 }
 </script>

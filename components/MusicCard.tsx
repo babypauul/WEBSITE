@@ -30,6 +30,7 @@ export const MusicCard: React.FC<MusicCardProps> = ({ track }) => {
           src={track.cover} 
           alt={track.title} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
+          loading="lazy"
         />
         
         {/* Gradient Overlay */}

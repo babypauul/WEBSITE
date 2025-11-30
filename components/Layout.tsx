@@ -34,7 +34,12 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col ${currentTrack ? 'pb-[100px]' : ''} relative overflow-hidden`}>
+    <div 
+      className="min-h-screen flex flex-col relative overflow-hidden"
+      style={{
+        paddingBottom: currentTrack ? 'calc(100px + env(safe-area-inset-bottom))' : 'env(safe-area-inset-bottom)'
+      }}
+    >
       <CustomCursor />
       <BackgroundParticles />
 
@@ -141,10 +146,10 @@ export const Layout: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, filter: 'blur(10px)' }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Cinematic Cut
             className="w-full h-full pt-24"
           >
             <Outlet />
