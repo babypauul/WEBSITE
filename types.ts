@@ -11,6 +11,12 @@ export interface Track {
   appleUrl?: string;
   type: 'song' | 'beat';
   price?: number; // For beats
+  checkoutUrl?: string;
+}
+
+export interface CartItem extends Track {
+  licenseType: 'MP3' | 'WAV' | 'UNLIMITED';
+  price: number;
 }
 
 export interface NavigationItem {

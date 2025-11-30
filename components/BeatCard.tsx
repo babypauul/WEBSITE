@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, ShoppingCart } from 'lucide-react';
+import { Play, Pause, ShoppingCart, Plus } from 'lucide-react';
 import { Track } from '../types';
 import { usePlayer } from '../context/PlayerContext';
+import { useCart } from '../context/CartContext';
 import { Button } from './Button';
 
 interface BeatCardProps {
@@ -12,23 +12,18 @@ interface BeatCardProps {
 
 export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
   const { currentTrack, isPlaying, playTrack } = usePlayer();
+  const { addToCart } = useCart();
   const isCurrent = currentTrack?.id === beat.id;
   const isActuallyPlaying = isCurrent && isPlaying;
 
-  // Parse description safely
   const parts = beat.description ? beat.description.split('•').map(s => s.trim()) : [];
   const genre = parts[0] || 'Beat';
   const bpm = parts[1] || '';
   const musicKey = parts[2] || '';
 
-  const handlePurchase = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card click
-    if (beat.checkoutUrl) {
-      window.open(beat.checkoutUrl, '_blank');
-    } else {
-      console.warn("No checkout URL configured for track:", beat.title);
-      // Fallback or alert if needed
-    }
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(beat, 'MP3'); // Default to MP3
   };
 
   return (
@@ -42,7 +37,6 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
       }}
       transition={{ duration: 0.2 }}
     >
-      {/* Glow Gradient Effect on Hover */}
       <div className="absolute -right-20 -top-20 w-64 h-64 bg-brand-red/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
       {/* Cover / Play */}
@@ -67,7 +61,6 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
       <div className="flex-grow text-center sm:text-left z-10 w-full sm:w-auto flex flex-col justify-center h-full">
         <h3 className="text-white font-black text-3xl group-hover:text-brand-red transition-colors tracking-tighter uppercase leading-none mb-2">{beat.title}</h3>
         
-        {/* Clean Metadata Text */}
         <p className="text-brand-gray/60 font-bold uppercase text-[10px] tracking-[0.2em]">
            <span className="text-brand-gray">{genre}</span>
            {bpm && <span className="text-brand-red mx-2">•</span>}
@@ -82,13 +75,11 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
         <span className="text-2xl font-black text-white tracking-tighter drop-shadow-lg">${beat.price}</span>
         <Button 
           variant="primary" 
-          onClick={handlePurchase}
-          className="py-3 px-6 text-[10px] w-full sm:w-auto shadow-none hover:shadow-lg !bg-brand-red !tracking-widest !font-bold !border-none relative overflow-hidden group/btn"
+          onClick={handleAddToCart}
+          className="py-3 px-6 text-[10px] w-full sm:w-auto shadow-none hover:shadow-lg !bg-brand-red !tracking-widest !font-bold !border-none"
         >
-          {/* Subtle sheen animation */}
-          <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
           <div className="flex items-center justify-center">
-             <ShoppingCart size={12} className="mr-2" /> PURCHASE
+             <Plus size={14} className="mr-2" /> ADD TO CART
           </div>
         </Button>
       </div>

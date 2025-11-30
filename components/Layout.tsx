@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import { Menu, X, Instagram, Twitter, Youtube, Mail, ChevronUp, ArrowRight, ShoppingCart } from 'lucide-react';
@@ -8,16 +7,17 @@ import { usePlayer } from '../context/PlayerContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CustomCursor } from './CustomCursor';
 import { Button } from './Button';
-import { BackgroundParticles } from './BackgroundParticles';
+import { ActiveBackground } from './ActiveBackground';
 import { CookieBanner } from './CookieBanner';
-import { Logo } from './Logo';
+import { CartDrawer } from './CartDrawer';
+import { useCart } from '../context/CartContext';
 
 export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { currentTrack } = usePlayer();
+  const { cart, toggleCart } = useCart();
   const location = useLocation();
-  const cartCount = 0; // Placeholder for cart logic
   
   const [scrolled, setScrolled] = useState(false);
 
@@ -38,13 +38,14 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col relative overflow-hidden"
+      className="min-h-screen flex flex-col relative overflow-hidden bg-[#050505]"
       style={{
         paddingBottom: currentTrack ? 'calc(100px + env(safe-area-inset-bottom))' : 'env(safe-area-inset-bottom)'
       }}
     >
       <CustomCursor />
-      <BackgroundParticles />
+      <ActiveBackground />
+      <CartDrawer />
       <CookieBanner />
 
       {/* --- NAVIGATION --- */}
@@ -56,7 +57,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Branding / Logo - Removed Icon, Text Only, PRODUCER is White */}
+            {/* Branding */}
             <Link 
               to="/" 
               onClick={() => setIsMobileMenuOpen(false)}
@@ -87,11 +88,14 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
               ))}
 
               {/* Cart Button */}
-              <button className="relative group text-brand-gray hover:text-white transition-colors cursor-hover">
+              <button 
+                onClick={toggleCart}
+                className="relative group text-brand-gray hover:text-white transition-colors cursor-hover p-2"
+              >
                 <ShoppingCart size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-brand-red text-white text-[9px] font-bold flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(225,6,0,0.5)]">
-                    {cartCount}
+                {cart.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-red text-white text-[9px] font-bold flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(225,6,0,0.5)] animate-pulse">
+                    {cart.length}
                   </span>
                 )}
               </button>
@@ -99,11 +103,11 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-6">
-              <button className="relative group text-brand-gray hover:text-white transition-colors">
+              <button onClick={toggleCart} className="relative group text-brand-gray hover:text-white transition-colors">
                   <ShoppingCart size={20} />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 w-4 h-4 bg-brand-red text-white text-[9px] font-bold flex items-center justify-center rounded-full">
-                      {cartCount}
+                  {cart.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-red text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                      {cart.length}
                     </span>
                   )}
               </button>
@@ -149,7 +153,6 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       {/* --- MAIN CONTENT --- */}
       <main className="flex-grow relative z-10">
         <AnimatePresence mode="wait">
-          {/* Changed 'key' to use pathname to ensure transitions fire correctly on route change */}
           <motion.div
             key={location.pathname}
             initial={{ opacity: 0, filter: 'blur(10px)' }}
@@ -165,19 +168,15 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
       {/* --- FOOTER --- */}
       <footer className="bg-[#050505]/80 backdrop-blur-lg pt-20 pb-10 border-t border-white/5 relative overflow-hidden z-10">
-        {/* Gradient Top */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
               {/* Brand */}
               <div className="md:col-span-4">
-                <Link to="/" className="flex items-center gap-3 mb-6 w-fit group">
-                   <Logo className="h-8 w-8 text-white transition-transform group-hover:scale-110" />
-                   <div className="flex flex-col">
-                     <span className="text-2xl font-black tracking-tighter text-white leading-none group-hover:text-brand-red transition-colors">BABYPAUUL</span>
-                     <span className="text-[0.6rem] uppercase tracking-[0.3em] text-brand-gray/50 leading-none mt-1">Killstreet Studio</span>
-                   </div>
+                <Link to="/" className="flex flex-col gap-1 mb-6 w-fit group">
+                   <span className="text-2xl font-black tracking-tighter text-white leading-none group-hover:text-brand-red transition-colors">BABYPAUUL</span>
+                   <span className="text-[0.6rem] uppercase tracking-[0.3em] text-brand-gray/50 leading-none">Killstreet Studio</span>
                 </Link>
                 <p className="text-brand-gray text-sm leading-relaxed mb-6 max-w-sm">
                    Defining the sound of the underground. Premium beats, mixing, and mastering services for serious artists.
@@ -248,7 +247,6 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
         </div>
       </footer>
 
-      {/* Back to Top Button */}
       <AnimatePresence>
         {showBackToTop && (
           <motion.button
