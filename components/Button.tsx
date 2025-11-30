@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,6 +13,21 @@ export const Button: React.FC<ButtonProps> = ({
   className = '', 
   ...props 
 }) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const x = e.clientX - (left + width / 2);
+    const y = e.clientY - (top + height / 2);
+    setPosition({ x: x * 0.2, y: y * 0.2 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
   // Apple Glass / Premium Styles
   const baseStyles = "relative inline-flex items-center justify-center px-8 py-4 font-sans font-bold text-sm tracking-[0.15em] uppercase transition-all duration-300 focus:outline-none rounded-lg overflow-hidden cursor-hover group";
   
@@ -35,28 +50,17 @@ export const Button: React.FC<ButtonProps> = ({
     ghost: "text-brand-gray hover:text-white hover:bg-white/5 backdrop-blur-sm"
   };
 
-  // Motion variants for the button container
-  const buttonMotion = {
-    rest: { y: 0, scale: 1 },
-    hover: { 
-      y: -3, 
-      scale: 1.02,
-      boxShadow: variant === 'primary' 
-        ? '0 15px 40px rgba(225,6,0,0.4)' 
-        : '0 10px 30px rgba(225,6,0,0.15)',
-      transition: { type: "spring", stiffness: 400, damping: 15 }
-    },
-    tap: { scale: 0.97, y: 0 }
-  };
-
   return (
     <motion.button 
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
       className={`${baseStyles} ${variants[variant]} ${className}`}
-      variants={buttonMotion}
-      initial="rest"
-      whileHover="hover"
-      whileTap="tap"
-      {...props as any} // Cast to any to avoid motion/html prop conflicts
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      {...props as any} 
     >
       {/* Glass Highlight / Sheen */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50 pointer-events-none" />
