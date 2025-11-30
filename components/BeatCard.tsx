@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, ShoppingCart } from 'lucide-react';
@@ -19,6 +20,16 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
   const genre = parts[0] || 'Beat';
   const bpm = parts[1] || '';
   const musicKey = parts[2] || '';
+
+  const handlePurchase = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
+    if (beat.checkoutUrl) {
+      window.open(beat.checkoutUrl, '_blank');
+    } else {
+      console.warn("No checkout URL configured for track:", beat.title);
+      // Fallback or alert if needed
+    }
+  };
 
   return (
     <motion.div 
@@ -69,8 +80,16 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
       {/* Price / Action */}
       <div className="flex flex-col items-center sm:items-end gap-2 min-w-[140px] z-10 w-full sm:w-auto mt-2 sm:mt-0 border-t sm:border-t-0 sm:border-l border-white/5 pt-4 sm:pt-0 sm:pl-6">
         <span className="text-2xl font-black text-white tracking-tighter drop-shadow-lg">${beat.price}</span>
-        <Button variant="primary" className="py-3 px-6 text-[10px] w-full sm:w-auto shadow-none hover:shadow-lg !bg-brand-red !tracking-widest !font-bold !border-none">
-          <ShoppingCart size={12} className="mr-2" /> ADD TO CART
+        <Button 
+          variant="primary" 
+          onClick={handlePurchase}
+          className="py-3 px-6 text-[10px] w-full sm:w-auto shadow-none hover:shadow-lg !bg-brand-red !tracking-widest !font-bold !border-none relative overflow-hidden group/btn"
+        >
+          {/* Subtle sheen animation */}
+          <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+          <div className="flex items-center justify-center">
+             <ShoppingCart size={12} className="mr-2" /> PURCHASE
+          </div>
         </Button>
       </div>
     </motion.div>

@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Music4, Mic2, Disc, Star, ExternalLink, Calendar } from 'lucide-react';
@@ -31,8 +32,8 @@ export const Home: React.FC = () => {
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Atmospheric Background Elements */}
         <div className="absolute inset-0 pointer-events-none z-0">
-             {/* Center spotlight - clearer and cleaner */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vh] bg-gradient-radial from-white/5 to-transparent opacity-20" />
+             {/* Center spotlight - cleaner and deeper */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-gradient-radial from-white/10 to-transparent opacity-30 blur-3xl" />
         </div>
 
         {/* Parallax Background */}
@@ -43,10 +44,10 @@ export const Home: React.FC = () => {
           <img 
             src="https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=2800&auto=format&fit=crop" 
             alt="Hero Studio" 
-            className="w-full h-full object-cover opacity-20 filter brightness-50 contrast-125 grayscale"
+            className="w-full h-full object-cover opacity-30 filter brightness-[0.4] contrast-125 grayscale"
           />
           {/* Stronger vignettes for focus */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/50 to-[#0A0A0A]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
         </motion.div>
 
@@ -55,17 +56,17 @@ export const Home: React.FC = () => {
           style={{ opacity: opacityHero, y: yText }}
           className="relative z-10 max-w-7xl mx-auto px-4 text-center flex flex-col items-center"
         >
-          {/* TUNNEL VISION TEXT - Solid Cinematic Block */}
+          {/* TUNNEL VISION TEXT - Cinematic & Impactful */}
           <motion.div 
-            initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             className="flex flex-col items-center mb-10 leading-none relative group cursor-default select-none mix-blend-screen"
           >
-            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 tracking-tighter drop-shadow-[0_0_40px_rgba(255,255,255,0.1)] relative z-10">
+            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 tracking-tighter drop-shadow-[0_0_60px_rgba(255,255,255,0.2)] relative z-10">
                TUNNEL
             </h1>
-            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-600 tracking-tighter drop-shadow-[0_0_40px_rgba(255,255,255,0.1)] -mt-2 md:-mt-6 relative z-10">
+            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-600 tracking-tighter drop-shadow-[0_0_60px_rgba(255,255,255,0.2)] -mt-2 md:-mt-6 relative z-10">
                VISION
             </h1>
             

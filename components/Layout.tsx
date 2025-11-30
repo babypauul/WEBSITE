@@ -56,17 +56,18 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Branding / Logo */}
-            <Link to="/" className="flex items-center gap-3 group cursor-hover z-50">
-                <Logo className="h-10 w-10 text-white transition-transform duration-500 group-hover:scale-110" />
-                <div className="flex flex-col">
-                  <span className="text-xl font-black tracking-tighter text-brand-red leading-none drop-shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all duration-500 group-hover:text-white group-hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.6)]">
-                    BABYPAUUL
-                  </span>
-                  <span className="text-[0.6rem] font-bold uppercase tracking-[0.35em] text-white/60 leading-none mt-1 group-hover:text-brand-red transition-colors duration-300">
-                    PRODUCER
-                  </span>
-                </div>
+            {/* Branding / Logo - Removed Icon, Text Only, PRODUCER is White */}
+            <Link 
+              to="/" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex flex-col z-50 group cursor-hover"
+            >
+                <span className="text-xl font-black tracking-tighter text-brand-red leading-none drop-shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all duration-500 group-hover:text-white group-hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.6)]">
+                  BABYPAUUL
+                </span>
+                <span className="text-[0.6rem] font-bold uppercase tracking-[0.35em] text-white leading-none mt-1 group-hover:text-brand-red transition-colors duration-300">
+                  PRODUCER
+                </span>
             </Link>
 
             {/* Desktop Links */}
@@ -148,12 +149,13 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       {/* --- MAIN CONTENT --- */}
       <main className="flex-grow relative z-10">
         <AnimatePresence mode="wait">
+          {/* Changed 'key' to use pathname to ensure transitions fire correctly on route change */}
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Cinematic Cut
+            initial={{ opacity: 0, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
+            transition={{ duration: 0.5, ease: "easeInOut" }} 
             className="w-full h-full pt-24"
           >
             {children}
