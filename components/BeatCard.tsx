@@ -1,10 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, ShoppingCart, Plus } from 'lucide-react';
+import { Play, Pause, ShoppingCart, BarChart2, Plus } from 'lucide-react';
 import { Track } from '../types';
 import { usePlayer } from '../context/PlayerContext';
 import { useCart } from '../context/CartContext';
-import { Button } from './Button';
 
 interface BeatCardProps {
   beat: Track;
@@ -16,72 +15,88 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
   const isCurrent = currentTrack?.id === beat.id;
   const isActuallyPlaying = isCurrent && isPlaying;
 
-  const parts = beat.description ? beat.description.split('•').map(s => s.trim()) : [];
-  const genre = parts[0] || 'Beat';
-  const bpm = parts[1] || '';
-  const musicKey = parts[2] || '';
-
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(beat, 'MP3'); // Default to MP3
+    addToCart(beat, 'MP3');
   };
+
+  const [genre, bpm] = beat.description ? beat.description.split('•').map(s => s.trim()) : ['Trap', '140 BPM'];
 
   return (
     <motion.div 
-      className="relative bg-white/[0.02] backdrop-blur-sm border border-white/5 rounded-xl p-5 flex flex-col sm:flex-row items-center gap-6 group cursor-hover overflow-hidden"
-      whileHover={{ 
-        y: -4,
-        backgroundColor: "rgba(255, 255, 255, 0.04)",
-        borderColor: "rgba(225, 6, 0, 0.2)",
-        boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)"
-      }}
-      transition={{ duration: 0.2 }}
+      className="group relative flex flex-col gap-0 w-full bg-transparent"
+      whileHover={{ y: -8 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <div className="absolute -right-20 -top-20 w-64 h-64 bg-brand-red/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-      {/* Cover / Play */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded-lg overflow-hidden shadow-2xl group-hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-500 ring-1 ring-white/10">
+      {/* Artwork Container */}
+      <div 
+        className="relative aspect-square w-full overflow-hidden rounded-lg bg-[#111] cursor-pointer shadow-lg group-hover:shadow-[0_20px_40px_-10px_rgba(225,6,0,0.3)] transition-all duration-500 border border-white/5 group-hover:border-brand-red/30"
+        onClick={() => playTrack(beat)}
+      >
         <img 
           src={beat.cover} 
           alt={beat.title} 
-          className="w-full h-full object-cover filter brightness-[0.8] contrast-110 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1 filter grayscale-[0.2] group-hover:grayscale-0"
           loading="lazy"
         />
-        <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-300 ${isActuallyPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-          <button 
-            onClick={() => playTrack(beat)}
-            className="w-10 h-10 rounded-full bg-brand-red text-white flex items-center justify-center hover:scale-110 transition-transform shadow-[0_0_20px_rgba(225,6,0,0.5)] backdrop-blur-sm border border-white/10"
-          >
-             {isActuallyPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-0.5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="flex-grow text-center sm:text-left z-10 w-full sm:w-auto flex flex-col justify-center h-full">
-        <h3 className="text-white font-black text-3xl group-hover:text-brand-red transition-colors tracking-tighter uppercase leading-none mb-2">{beat.title}</h3>
         
-        <p className="text-brand-gray/60 font-bold uppercase text-[10px] tracking-[0.2em]">
-           <span className="text-brand-gray">{genre}</span>
-           {bpm && <span className="text-brand-red mx-2">•</span>}
-           {bpm && <span>{bpm}</span>}
-           {musicKey && <span className="text-brand-red mx-2">•</span>}
-           {musicKey && <span>{musicKey}</span>}
-        </p>
+        {/* Cinematic Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+
+        {/* Play Button Overlay - Centered */}
+        <div className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${isActuallyPlaying ? 'opacity-100 bg-black/40' : 'opacity-0 group-hover:opacity-100 backdrop-blur-[2px]'}`}>
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-red text-white shadow-[0_0_30px_rgba(225,6,0,0.6)] transform scale-90 group-hover:scale-100 transition-all duration-300">
+            {isActuallyPlaying ? (
+              <Pause size={28} fill="currentColor" />
+            ) : (
+              <Play size={28} fill="currentColor" className="ml-1" />
+            )}
+          </div>
+        </div>
+
+        {/* Status Badge */}
+        {isCurrent && (
+           <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-brand-red/50 text-brand-red text-[10px] font-bold uppercase tracking-widest rounded-full shadow-xl z-10">
+              <BarChart2 size={12} className="animate-pulse" /> Playing
+           </div>
+        )}
+
+        {/* Quick Action - Top Right */}
+        <button
+          onClick={handleAddToCart}
+          className="absolute top-4 right-4 p-3 bg-white text-black hover:bg-brand-red hover:text-white rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10"
+          title="Add to Cart"
+        >
+          <ShoppingCart size={16} />
+        </button>
       </div>
 
-      {/* Price / Action */}
-      <div className="flex flex-col items-center sm:items-end gap-2 min-w-[140px] z-10 w-full sm:w-auto mt-2 sm:mt-0 border-t sm:border-t-0 sm:border-l border-white/5 pt-4 sm:pt-0 sm:pl-6">
-        <span className="text-2xl font-black text-white tracking-tighter drop-shadow-lg">${beat.price}</span>
-        <Button 
-          variant="primary" 
-          onClick={handleAddToCart}
-          className="py-3 px-6 text-[10px] w-full sm:w-auto shadow-none hover:shadow-lg !bg-brand-red !tracking-widest !font-bold !border-none"
-        >
-          <div className="flex items-center justify-center">
-             <Plus size={14} className="mr-2" /> ADD TO CART
-          </div>
-        </Button>
+      {/* Info Section - Clean & Minimal */}
+      <div className="pt-5 px-1 flex flex-col gap-1">
+         <div className="flex justify-between items-end">
+            <h3 
+              className="text-2xl font-black text-white uppercase tracking-tighter leading-none group-hover:text-brand-red transition-colors cursor-pointer"
+              onClick={() => playTrack(beat)}
+            >
+               {beat.title}
+            </h3>
+            <span className="text-xl font-bold text-brand-red tracking-tight font-mono">${beat.price}</span>
+         </div>
+         
+         <div className="flex justify-between items-center mt-2 border-t border-white/10 pt-3">
+            <div className="flex gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gray/60">
+               <span>{genre}</span>
+               <span className="text-brand-red/50">•</span>
+               <span>{bpm}</span>
+            </div>
+            
+            <button 
+               onClick={handleAddToCart}
+               className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors flex items-center gap-1 group/txt"
+            >
+               Add <Plus size={12} className="group-hover/txt:rotate-90 transition-transform duration-300" />
+            </button>
+         </div>
       </div>
     </motion.div>
   );

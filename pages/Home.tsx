@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Star, Disc, Music, Sliders, Mic2, Layers } from 'lucide-react';
+import { ArrowRight, Star, Disc, Music, Sliders, Mic2, Layers, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { BeatCard } from '../components/BeatCard';
@@ -64,23 +64,12 @@ export const Home: React.FC = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-gradient-radial from-brand-red/10 to-transparent opacity-40 blur-[100px] pointer-events-none z-0" />
       </section>
 
-      {/* --- CREDITS MARQUEE (COMPACT) --- */}
-      <section className="py-12 bg-white/5 border-y border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-brand-red/5 blur-3xl opacity-50"></div>
-        <p className="text-center text-xs font-bold text-brand-red uppercase tracking-[0.3em] mb-6">Selected Production Credits</p>
-        <ScrollingMarquee 
-          text={CREDITS_DATA.map(c => `${c.artist} (${c.role})`).join("  ///  ")} 
-          speed={40} 
-          className="opacity-80"
-        />
-      </section>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* --- LATEST MUSIC --- */}
-        <section className="py-24">
+        {/* --- LATEST DROPS --- */}
+        <section className="py-24 border-b border-white/5">
            <Reveal width="100%">
-             <div className="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+             <div className="flex justify-between items-end mb-12">
                <h3 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">Latest Drops</h3>
                <Link to="/music" className="hidden md:flex items-center text-sm font-bold uppercase tracking-widest text-brand-gray hover:text-white transition-colors group">
                   View Discography <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -109,145 +98,130 @@ export const Home: React.FC = () => {
            </div>
         </section>
 
-        {/* --- BEAT STORE (GRID) --- */}
+        {/* --- MARKETPLACE --- */}
         <section className="py-24 relative">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <Reveal>
-              <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-sm mb-3">Marketplace</h2>
-              <h3 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-6">FEATURED BEATS</h3>
-            </Reveal>
-          </div>
+          {/* Background Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-gradient-radial from-brand-red/5 to-transparent blur-[120px] pointer-events-none -z-10" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <Reveal>
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+               <div className="relative">
+                  <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-xs mb-4 flex items-center gap-2">
+                     <Zap size={12} fill="currentColor" /> Marketplace
+                  </h2>
+                  <h3 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none">
+                     FEATURED
+                     <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-600">BEATS</span>
+                  </h3>
+               </div>
+               <Link to="/beats" className="mb-2">
+                  <Button variant="outline" className="px-8 text-xs border-brand-red/30 hover:border-brand-red hover:bg-brand-red/10">
+                     View All Beats <ArrowRight size={14} className="ml-2" />
+                  </Button>
+               </Link>
+            </div>
+          </Reveal>
+
+          {/* New Clean Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12">
             {featuredBeats.map((beat, i) => (
-              <Reveal key={beat.id} delay={i * 0.1}>
-                <BeatCard beat={beat} />
-              </Reveal>
+               <Reveal key={beat.id} delay={i * 0.1}>
+                  <BeatCard beat={beat} />
+               </Reveal>
             ))}
           </div>
 
-          <div className="mt-12 text-center">
-            <Link to="/beats">
-              <Button variant="outline" className="px-10">View Full Catalogue</Button>
-            </Link>
+          {/* Licensing Snapshot */}
+          <div className="mt-32 border-t border-white/5 pt-16">
+             <Reveal width="100%">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                   {[
+                      { name: 'Basic Lease', price: '$29.99', features: ['MP3 (320kbps)', '50k Streams', 'Non-Exclusive'] },
+                      { name: 'Premium Lease', price: '$49.99', features: ['WAV + MP3', '500k Streams', 'Track Stems'], highlight: true },
+                      { name: 'Exclusive', price: 'Make Offer', features: ['Full Ownership', 'Unlimited', 'Publishing'] },
+                   ].map((tier, i) => (
+                      <div key={i} className={`group relative p-8 rounded-2xl border transition-all duration-300 ${tier.highlight ? 'bg-gradient-to-b from-brand-red/10 to-transparent border-brand-red/50' : 'bg-[#0A0A0A] border-white/5 hover:border-white/20'}`}>
+                         <h5 className="text-white font-black uppercase tracking-wider text-lg mb-2">{tier.name}</h5>
+                         <div className={`text-3xl font-black mb-6 ${tier.highlight ? 'text-brand-red' : 'text-white'}`}>{tier.price}</div>
+                         <ul className="text-sm text-brand-gray space-y-3 mb-8">
+                            {tier.features.map((f, j) => <li key={j} className="flex items-center gap-2"><div className="w-1 h-1 bg-current rounded-full" /> {f}</li>)}
+                         </ul>
+                         <Link to="/licensing" className="absolute bottom-8 right-8 text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
+                            View <ArrowRight size={12} className="inline ml-1" />
+                         </Link>
+                      </div>
+                   ))}
+                </div>
+             </Reveal>
           </div>
         </section>
 
-        {/* --- LICENSING TIERS (CLEAN) --- */}
-        <section className="py-20 border-t border-white/5">
-           <Reveal width="100%">
-             <div className="text-center mb-16">
-               <h3 className="text-3xl font-bold text-white uppercase tracking-wide">Simple Pricing</h3>
-               <p className="text-brand-gray mt-2">Transparent licensing for independent artists.</p>
-             </div>
-           </Reveal>
-
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Basic */}
-              <Reveal delay={0.1}>
-                <div className="p-8 rounded-2xl bg-[#0A0A0A] border border-white/5 hover:border-white/20 transition-all group h-full flex flex-col">
-                   <div className="mb-4 p-3 bg-white/5 rounded-lg w-fit text-brand-gray group-hover:text-white group-hover:bg-brand-red group-hover:shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all">
-                      <Music size={24} />
-                   </div>
-                   <h4 className="text-xl font-bold text-white uppercase tracking-wider mb-2">Basic Lease</h4>
-                   <div className="text-3xl font-black text-brand-red mb-6">$29.99</div>
-                   <ul className="space-y-3 mb-8 flex-grow">
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> MP3 File</li>
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> 50,000 Streams</li>
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> 1 Music Video</li>
-                   </ul>
-                   <Link to="/licensing" className="block w-full py-3 text-center border border-white/10 rounded-lg text-xs font-bold uppercase tracking-widest text-brand-gray hover:text-white hover:bg-white/5 transition-colors">
-                      Learn More
-                   </Link>
-                </div>
-              </Reveal>
-
-              {/* Premium */}
-              <Reveal delay={0.2}>
-                <div className="p-8 rounded-2xl bg-[#0F0F0F] border border-brand-red/30 shadow-[0_0_30px_rgba(225,6,0,0.05)] relative overflow-hidden h-full flex flex-col transform md:-translate-y-4">
-                   <div className="absolute top-0 right-0 bg-brand-red text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest">Popular</div>
-                   <div className="mb-4 p-3 bg-brand-red rounded-lg w-fit text-white shadow-lg">
-                      <Disc size={24} />
-                   </div>
-                   <h4 className="text-xl font-bold text-white uppercase tracking-wider mb-2">Premium</h4>
-                   <div className="text-3xl font-black text-white mb-6">$49.99</div>
-                   <ul className="space-y-3 mb-8 flex-grow">
-                      <li className="flex gap-3 text-sm text-white"><Star size={14} className="text-brand-red" /> WAV + MP3 Files</li>
-                      <li className="flex gap-3 text-sm text-white"><Star size={14} className="text-brand-red" /> 500,000 Streams</li>
-                      <li className="flex gap-3 text-sm text-white"><Star size={14} className="text-brand-red" /> Track Stems</li>
-                   </ul>
-                   <Link to="/licensing" className="block w-full py-3 text-center bg-brand-red rounded-lg text-xs font-bold uppercase tracking-widest text-white hover:bg-brand-red/80 transition-colors shadow-lg">
-                      View License
-                   </Link>
-                </div>
-              </Reveal>
-
-              {/* Exclusive */}
-              <Reveal delay={0.3}>
-                <div className="p-8 rounded-2xl bg-[#0A0A0A] border border-white/5 hover:border-white/20 transition-all group h-full flex flex-col">
-                   <div className="mb-4 p-3 bg-white/5 rounded-lg w-fit text-brand-gray group-hover:text-white group-hover:bg-brand-red group-hover:shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all">
-                      <Star size={24} />
-                   </div>
-                   <h4 className="text-xl font-bold text-white uppercase tracking-wider mb-2">Exclusive</h4>
-                   <div className="text-3xl font-black text-brand-gray mb-6">Make Offer</div>
-                   <ul className="space-y-3 mb-8 flex-grow">
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> Full Ownership</li>
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> Unlimited Streams</li>
-                      <li className="flex gap-3 text-sm text-brand-gray"><Star size={14} className="text-brand-red" /> Publishing Rights</li>
-                   </ul>
-                   <Link to="/contact" className="block w-full py-3 text-center border border-white/10 rounded-lg text-xs font-bold uppercase tracking-widest text-brand-gray hover:text-white hover:bg-white/5 transition-colors">
-                      Contact Us
-                   </Link>
-                </div>
-              </Reveal>
-           </div>
-        </section>
-
-        {/* --- SERVICES (NEW SECTION) --- */}
-        <section className="py-24">
+        {/* --- SERVICES --- */}
+        <section className="py-24 border-t border-white/5">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
               <Reveal>
                  <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-sm mb-4">Studio Services</h2>
                  <h3 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-6">PROFESSIONAL ENGINEERING</h3>
                  <p className="text-brand-gray text-lg leading-relaxed mb-8">
                     Beyond beats, Killstreet Studio offers full-service mixing and mastering. 
-                    Get your tracks radio-ready with industry standard analog processing and digital precision.
+                    Get your tracks radio-ready with industry standard analog processing.
                  </p>
                  <Link to="/contact">
                     <Button variant="primary">Book Session</Button>
                  </Link>
               </Reveal>
 
-              <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-4">
                  <Reveal delay={0.2}>
-                    <div className="flex gap-6 p-6 border border-white/5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                       <div className="p-4 bg-white/5 rounded-full h-fit"><Sliders className="text-brand-red" /></div>
+                    <div className="group flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl cursor-default hover:border-brand-red/30">
+                       <div className="p-4 bg-white/5 h-fit rounded-lg group-hover:bg-brand-red group-hover:text-white transition-colors text-brand-red shadow-lg"><Sliders size={20} /></div>
                        <div>
-                          <h4 className="text-xl font-bold text-white mb-2">Mixing</h4>
-                          <p className="text-sm text-brand-gray">Vocal tuning, dynamic balancing, and creative effects processing.</p>
+                          <h4 className="text-lg font-bold text-white mb-2 uppercase tracking-tight">Mixing</h4>
+                          <p className="text-sm text-brand-gray leading-relaxed">Vocal tuning, dynamic balancing, creative effects processing, and analog warmth.</p>
                        </div>
                     </div>
                  </Reveal>
                  <Reveal delay={0.3}>
-                    <div className="flex gap-6 p-6 border border-white/5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                       <div className="p-4 bg-white/5 rounded-full h-fit"><Layers className="text-brand-red" /></div>
+                    <div className="group flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl cursor-default hover:border-brand-red/30">
+                       <div className="p-4 bg-white/5 h-fit rounded-lg group-hover:bg-brand-red group-hover:text-white transition-colors text-brand-red shadow-lg"><Layers size={20} /></div>
                        <div>
-                          <h4 className="text-xl font-bold text-white mb-2">Mastering</h4>
-                          <p className="text-sm text-brand-gray">Loudness optimization, stereo enhancement, and final polish for streaming.</p>
-                       </div>
-                    </div>
-                 </Reveal>
-                 <Reveal delay={0.4}>
-                    <div className="flex gap-6 p-6 border border-white/5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                       <div className="p-4 bg-white/5 rounded-full h-fit"><Mic2 className="text-brand-red" /></div>
-                       <div>
-                          <h4 className="text-xl font-bold text-white mb-2">Custom Production</h4>
-                          <p className="text-sm text-brand-gray">Tailor-made instrumentals built from scratch to fit your artistic vision.</p>
+                          <h4 className="text-lg font-bold text-white mb-2 uppercase tracking-tight">Mastering</h4>
+                          <p className="text-sm text-brand-gray leading-relaxed">Loudness optimization, stereo enhancement, and final polish for streaming platforms.</p>
                        </div>
                     </div>
                  </Reveal>
               </div>
            </div>
+        </section>
+
+        {/* --- PRODUCTION CREDITS --- */}
+        <section className="py-24 border-t border-white/5">
+           <Reveal width="100%">
+             <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div>
+                   <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-brand-red mb-2">Selected Works</h4>
+                   <h3 className="text-3xl font-black text-white uppercase tracking-tight">Production Credits</h3>
+                </div>
+             </div>
+             
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                 {CREDITS_DATA.map((credit, i) => (
+                    <div key={i} className="flex justify-between items-center py-4 border-b border-white/5 group hover:border-brand-red/50 transition-colors">
+                       <h4 className="text-xl font-bold text-white uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-300">
+                          {credit.artist}
+                       </h4>
+                       <div className="flex items-center gap-4">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gray/60">
+                             {credit.role}
+                          </span>
+                          <span className="text-[10px] font-mono text-brand-red border border-brand-red/20 px-2 py-1 rounded">
+                             {credit.year}
+                          </span>
+                       </div>
+                    </div>
+                 ))}
+             </div>
+           </Reveal>
         </section>
 
       </div>

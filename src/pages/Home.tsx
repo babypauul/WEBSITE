@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Star, Disc, Music, Sliders, Mic2, Layers, Check, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Star, Disc, Music, Sliders, Mic2, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { BeatCard } from '../components/BeatCard';
@@ -98,37 +98,90 @@ export const Home: React.FC = () => {
            </div>
         </section>
 
+        {/* --- MARKETPLACE (VERTICAL CARDS) --- */}
+        <section className="py-24 relative">
+          <Reveal>
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+               <div>
+                  <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-sm mb-3">Marketplace</h2>
+                  <h3 className="text-5xl md:text-6xl font-black text-white tracking-tighter">FEATURED BEATS</h3>
+               </div>
+               <Link to="/beats">
+                  <Button variant="outline" className="px-8 text-xs">
+                     View All Beats
+                  </Button>
+               </Link>
+            </div>
+          </Reveal>
+
+          {/* Beats Grid - Vertical Poster Style */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {BEAT_DATA.map((beat, i) => (
+               <Reveal key={beat.id} delay={i * 0.1}>
+                  <BeatCard beat={beat} />
+               </Reveal>
+            ))}
+          </div>
+
+          {/* Integrated Licensing - Glass Style */}
+          <div className="mt-24">
+             <Reveal width="100%">
+                <div className="text-center mb-10">
+                   <h4 className="text-lg font-bold text-white uppercase tracking-widest">Licensing Options</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                   {[
+                      { name: 'Basic Lease', price: '$29.99', features: ['MP3 (320kbps)', '50k Streams', 'Non-Exclusive'] },
+                      { name: 'Premium Lease', price: '$49.99', features: ['WAV + MP3', '500k Streams', 'Track Stems'], highlight: true },
+                      { name: 'Exclusive', price: 'Make Offer', features: ['Full Ownership', 'Unlimited', 'Publishing'] },
+                   ].map((tier, i) => (
+                      <div key={i} className={`p-6 rounded-xl border ${tier.highlight ? 'bg-white/5 border-brand-red/50' : 'bg-[#0A0A0A] border-white/5'} flex flex-col items-center text-center`}>
+                         <h5 className="text-white font-bold uppercase tracking-wider text-sm mb-2">{tier.name}</h5>
+                         <div className={`text-2xl font-black mb-4 ${tier.highlight ? 'text-brand-red' : 'text-white'}`}>{tier.price}</div>
+                         <ul className="text-xs text-brand-gray space-y-2 mb-6">
+                            {tier.features.map((f, j) => <li key={j}>{f}</li>)}
+                         </ul>
+                         <Link to="/licensing" className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors border-b border-transparent hover:border-brand-red pb-0.5">
+                            View Details
+                         </Link>
+                      </div>
+                   ))}
+                </div>
+             </Reveal>
+          </div>
+        </section>
+
         {/* --- SERVICES --- */}
-        <section className="py-24 border-b border-white/5">
+        <section className="py-24 border-t border-white/5">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
               <Reveal>
                  <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-sm mb-4">Studio Services</h2>
                  <h3 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-6">PROFESSIONAL ENGINEERING</h3>
                  <p className="text-brand-gray text-lg leading-relaxed mb-8">
                     Beyond beats, Killstreet Studio offers full-service mixing and mastering. 
-                    Get your tracks radio-ready with industry standard analog processing and digital precision.
+                    Get your tracks radio-ready with industry standard analog processing.
                  </p>
                  <Link to="/contact">
                     <Button variant="primary">Book Session</Button>
                  </Link>
               </Reveal>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-4">
                  <Reveal delay={0.2}>
-                    <div className="flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl">
-                       <div className="p-4 bg-white/5 h-fit rounded-lg"><Sliders className="text-brand-red" /></div>
+                    <div className="group flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl">
+                       <div className="p-3 bg-white/5 h-fit rounded-lg group-hover:bg-brand-red group-hover:text-white transition-colors text-brand-red"><Sliders size={20} /></div>
                        <div>
-                          <h4 className="text-xl font-bold text-white mb-2 uppercase tracking-tight">Mixing</h4>
-                          <p className="text-sm text-brand-gray">Vocal tuning, dynamic balancing, and creative effects processing.</p>
+                          <h4 className="text-lg font-bold text-white mb-1 uppercase tracking-tight">Mixing</h4>
+                          <p className="text-xs text-brand-gray">Vocal tuning, dynamic balancing, effects.</p>
                        </div>
                     </div>
                  </Reveal>
                  <Reveal delay={0.3}>
-                    <div className="flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl">
-                       <div className="p-4 bg-white/5 h-fit rounded-lg"><Layers className="text-brand-red" /></div>
+                    <div className="group flex gap-6 p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors rounded-xl">
+                       <div className="p-3 bg-white/5 h-fit rounded-lg group-hover:bg-brand-red group-hover:text-white transition-colors text-brand-red"><Layers size={20} /></div>
                        <div>
-                          <h4 className="text-xl font-bold text-white mb-2 uppercase tracking-tight">Mastering</h4>
-                          <p className="text-sm text-brand-gray">Loudness optimization, stereo enhancement, and final polish.</p>
+                          <h4 className="text-lg font-bold text-white mb-1 uppercase tracking-tight">Mastering</h4>
+                          <p className="text-xs text-brand-gray">Loudness optimization, final polish.</p>
                        </div>
                     </div>
                  </Reveal>
@@ -136,94 +189,28 @@ export const Home: React.FC = () => {
            </div>
         </section>
 
-        {/* --- MARKETPLACE (PREMIUM REBRAND) --- */}
-        <section className="py-24 relative">
-          <Reveal>
-            <div className="text-center mb-16">
-              <h2 className="text-brand-red font-bold uppercase tracking-[0.3em] text-sm mb-3">Marketplace</h2>
-              <h3 className="text-5xl md:text-6xl font-black text-white tracking-tighter">FEATURED BEATS</h3>
-            </div>
-          </Reveal>
-
-          {/* Beats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredBeats.map((beat, i) => (
-               <Reveal key={beat.id} delay={i * 0.1}>
-                  <BeatCard beat={beat} />
-               </Reveal>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link to="/beats">
-               <Button variant="outline" className="px-12">
-                  View Full Catalogue
-               </Button>
-            </Link>
-          </div>
-
-          {/* Integrated Licensing */}
-          <div className="mt-24 p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent">
-             <div className="bg-[#050505] rounded-2xl p-8 md:p-12 border border-white/5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                   {/* MP3 */}
-                   <div className="text-center px-4">
-                      <h4 className="text-xl font-black text-white uppercase tracking-wider mb-2">MP3 Lease</h4>
-                      <div className="text-4xl font-black text-brand-red mb-6">$29.99</div>
-                      <ul className="text-sm text-brand-gray space-y-2 mb-6">
-                         <li>MP3 File (320kbps)</li>
-                         <li>50,000 Streams</li>
-                         <li>Non-Exclusive</li>
-                      </ul>
-                      <Link to="/beats" className="text-xs font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors">Select Beat</Link>
-                   </div>
-                   
-                   {/* WAV */}
-                   <div className="text-center px-4 pt-8 md:pt-0">
-                      <div className="inline-block px-3 py-1 bg-brand-red/10 text-brand-red text-[10px] font-bold uppercase tracking-widest rounded-full mb-4">Most Popular</div>
-                      <h4 className="text-xl font-black text-white uppercase tracking-wider mb-2">WAV Lease</h4>
-                      <div className="text-4xl font-black text-white mb-6">$49.99</div>
-                      <ul className="text-sm text-brand-gray space-y-2 mb-6">
-                         <li>WAV + MP3 Files</li>
-                         <li>500,000 Streams</li>
-                         <li>Track Stems</li>
-                      </ul>
-                      <Link to="/beats" className="text-xs font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors">Select Beat</Link>
-                   </div>
-
-                   {/* Exclusive */}
-                   <div className="text-center px-4 pt-8 md:pt-0">
-                      <h4 className="text-xl font-black text-white uppercase tracking-wider mb-2">Exclusive</h4>
-                      <div className="text-4xl font-black text-brand-gray mb-6">Offer</div>
-                      <ul className="text-sm text-brand-gray space-y-2 mb-6">
-                         <li>Full Ownership</li>
-                         <li>Unlimited Streams</li>
-                         <li>Publishing Rights</li>
-                      </ul>
-                      <Link to="/contact" className="text-xs font-bold uppercase tracking-widest text-white hover:text-brand-red transition-colors">Contact Us</Link>
-                   </div>
-                </div>
-             </div>
-          </div>
-        </section>
-
-        {/* --- CREDITS (HALL OF FAME STYLE) --- */}
-        <section className="pb-24 pt-12 border-t border-white/5">
+        {/* --- PRODUCTION CREDITS (CLEAN LIST) --- */}
+        <section className="py-24 border-t border-white/5">
            <Reveal width="100%">
              <div className="text-center mb-16">
-                <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white/50 mb-2">Selected Works</h4>
-                <h3 className="text-4xl font-black text-white uppercase tracking-tight">Production Credits</h3>
+                <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-brand-red mb-2">Selected Works</h4>
+                <h3 className="text-3xl font-black text-white uppercase tracking-tight">Production Credits</h3>
              </div>
              
-             <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
+             <div className="max-w-2xl mx-auto space-y-8">
                  {CREDITS_DATA.map((credit, i) => (
-                    <div key={i} className="group">
-                       <h4 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter group-hover:text-brand-red transition-colors duration-300">
+                    <div key={i} className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-2 border-b border-white/5 pb-4 last:border-0 hover:bg-white/[0.02] px-4 rounded-lg transition-colors">
+                       <h4 className="text-xl font-bold text-white uppercase tracking-tighter">
                           {credit.artist}
                        </h4>
-                       <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gray/50 mt-2 group-hover:text-white transition-colors">
-                          {credit.role}
-                       </p>
+                       <div className="flex items-center gap-4">
+                          <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gray/60">
+                             {credit.role}
+                          </span>
+                          <span className="text-xs font-mono text-brand-red">
+                             {credit.year}
+                          </span>
+                       </div>
                     </div>
                  ))}
              </div>
