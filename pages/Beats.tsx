@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BeatCard } from '../components/BeatCard';
 import { BEAT_DATA } from '../constants';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Loader2 } from 'lucide-react';
+import { Track } from '../types';
 
 export const Beats: React.FC = () => {
+  const [beats, setBeats] = useState<Track[]>(BEAT_DATA);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // Simulated infinite scroll
+  const loadMore = () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      const newBeats = BEAT_DATA.map(b => ({...b, id: `${b.id}-${Date.now()}`}));
+      setBeats(prev => [...prev, ...newBeats]);
+      setIsLoading(false);
+      // Stop after a few loads for demo purposes
+      if (beats.length > 20) setHasMore(false);
+    }, 1500);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !isLoading && hasMore) {
+        loadMore();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLoading, hasMore, beats]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-screen">
        <div className="text-center max-w-4xl mx-auto mb-24 relative">
@@ -33,18 +62,24 @@ export const Beats: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-6 max-w-5xl mx-auto">
-        {BEAT_DATA.map((beat, index) => (
+        {beats.map((beat, index) => (
           <motion.div
             key={beat.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }}
+            transition={{ delay: (index % 10) * 0.1, duration: 0.4 }}
           >
             <BeatCard beat={beat} />
           </motion.div>
         ))}
       </div>
       
+      {isLoading && (
+        <div className="flex justify-center py-10">
+          <Loader2 className="animate-spin text-brand-red w-8 h-8" />
+        </div>
+      )}
+
       {/* Promo Section */}
       <motion.div 
         initial={{ opacity: 0, y: 40 }}

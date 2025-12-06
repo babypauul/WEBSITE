@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trash2, ShoppingCart, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { X, Trash2, ShoppingCart, Lock, ArrowRight, CheckCircle, Mail } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { Button } from './Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const CartDrawer: React.FC = () => {
   const { cart, isCartOpen, toggleCart, removeFromCart, cartTotal, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleCheckout = () => {
     setIsCheckingOut(true);
-    // Simulate API process
+    // Simulate processing
     setTimeout(() => {
       setIsCheckingOut(false);
-      setCheckoutSuccess(true);
-      setTimeout(() => {
-        setCheckoutSuccess(false);
-        clearCart();
-        toggleCart();
-      }, 3000);
-    }, 2000);
+      toggleCart();
+      // Redirect to contact page with intention to buy
+      // In a real app, this would pass cart data to the form
+      navigate('/contact');
+    }, 1500);
   };
 
   return (
@@ -97,21 +95,19 @@ export const CartDrawer: React.FC = () => {
                  </div>
                  
                  <div className="text-[10px] text-brand-gray/60 text-center leading-tight">
-                    By clicking checkout you agree to our <Link to="/terms" onClick={toggleCart} className="underline hover:text-brand-red">Terms</Link> & <Link to="/licensing" onClick={toggleCart} className="underline hover:text-brand-red">Licensing</Link>.
+                    Secure payments via Bank Transfer or PayPal. Clicking "Request Purchase" will open the contact form to finalize your order directly with the studio.
                  </div>
 
                  <Button 
                     variant="primary" 
                     onClick={handleCheckout}
-                    disabled={isCheckingOut || checkoutSuccess}
+                    disabled={isCheckingOut}
                     className="w-full py-4 !text-sm !tracking-widest relative overflow-hidden"
                  >
                     {isCheckingOut ? (
-                      <span className="animate-pulse">Processing...</span>
-                    ) : checkoutSuccess ? (
-                      <span className="flex items-center justify-center text-green-400 gap-2"><CheckCircle size={18} /> Success</span>
+                      <span className="animate-pulse">Redirecting...</span>
                     ) : (
-                      <span className="flex items-center justify-center gap-2"><Lock size={16} /> Secure Checkout</span>
+                      <span className="flex items-center justify-center gap-2"><Mail size={16} /> Request Purchase</span>
                     )}
                  </Button>
               </div>

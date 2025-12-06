@@ -4,36 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E10600'/%3E%3Crect x='25' y='25' width='50' height='50' fill='%230A0A0A'/%3E%3C/svg%3E" />
     
-    <!-- Viewport fit=cover is essential for full-bleed mobile experience (iPhone notch/home bar) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     
-    <!-- SEO & Metadata -->
-    <title>Babypauul | Killstreet Studio</title>
-    <meta name="description" content="Babypauul - Killstreet Studio. Premium Beats, Audio Engineering, and Sound Design. The sound of the underground." />
-    <meta name="keywords" content="Babypauul, Killstreet Studio, Beats for Sale, Trap Beats, Audio Engineer, Music Producer" />
-    <meta name="author" content="Babypauul" />
+    <title>Babypauul | Killstreet Studio | Rovigo</title>
+    <meta name="description" content="Babypauul - Music Producer, Artist & Audio Engineer based in Rovigo, Italy. Professional Mixing, Mastering, and Custom Beats at Killstreet Studio." />
     <meta name="theme-color" content="#050505" />
 
-    <!-- Open Graph / Facebook / Instagram / iMessage -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://babypauul.it/" />
-    <meta property="og:title" content="Babypauul | Killstreet Studio" />
-    <meta property="og:description" content="Defining the sound of the underground. Premium beats, mixing, and mastering." />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://babypauul.it/" />
-    <meta property="twitter:title" content="Babypauul | Killstreet Studio" />
-    <meta property="twitter:description" content="Defining the sound of the underground. Premium beats, mixing, and mastering." />
-    <meta property="twitter:image" content="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" />
-    
-    <!-- Google Fonts: Inter & Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -45,78 +25,60 @@
                 red: '#E10600',
                 dark: '#0A0A0A',
                 gray: '#BDBDBD',
-                light: '#F5F5F5',
               }
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
-              body: ['Roboto', 'sans-serif'],
-              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
             },
-            backgroundImage: {
-              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-            },
-            keyframes: {
-              shimmer: {
-                '100%': { transform: 'translateX(100%)' }
-              }
-            }
           }
         }
       }
     </script>
 
     <style>
-      /* Global Styles & Grain Texture */
       body {
         margin: 0;
-        overflow-x: hidden;
-        cursor: none; /* Hide default cursor */
-        background-color: #050505;
-        /* Clean gradient: just a hint of light at the top for depth */
-        background-image: radial-gradient(circle at 50% 0%, #151515 0%, #050505 60%);
-        background-attachment: fixed;
+        background-color: #000000;
         color: #F5F5F5;
-        -webkit-tap-highlight-color: transparent;
+        overflow-x: hidden;
       }
       
-      /* Brand Selection Color */
       ::selection {
         background: #E10600;
         color: #FFFFFF;
+        text-shadow: 0 0 10px rgba(225, 6, 0, 0.5);
+      }
+
+      /* GLOBAL BLOOM UTILITIES */
+      .text-glow {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
       }
       
-      /* Ensure default cursor is hidden on interactive elements too */
-      a, button, input, textarea, select {
-        cursor: none;
+      .text-glow-red {
+        text-shadow: 0 0 30px rgba(225, 6, 0, 0.6);
+      }
+
+      .box-glow {
+        box-shadow: 0 0 40px rgba(225, 6, 0, 0.15);
+      }
+
+      .box-glow-hover:hover {
+        box-shadow: 0 0 60px rgba(225, 6, 0, 0.4);
       }
 
       .grain-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         pointer-events: none;
-        z-index: 40; /* Lower than custom cursor but above content */
-        opacity: 0.04;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+        z-index: 50;
+        opacity: 0.05;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
       }
 
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #050505;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #333;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #E10600;
-      }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #000; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: #E10600; }
     </style>
   <script type="importmap">
 {
@@ -128,7 +90,8 @@
     "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
-    "vite": "https://aistudiocdn.com/vite@^7.2.4"
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
   }
 }
 </script>

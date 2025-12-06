@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, useInView, useAnimation, Variant } from 'framer-motion';
+import { motion, useInView, useAnimation } from 'framer-motion';
 
 interface RevealProps {
   children: React.ReactNode;
@@ -8,9 +8,9 @@ interface RevealProps {
   className?: string;
 }
 
-export const Reveal: React.FC<RevealProps> = ({ children, width = "fit-content", delay = 0.25, className = "" }) => {
+export const Reveal: React.FC<RevealProps> = ({ children, width = "fit-content", delay = 0.1, className = "" }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-75px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const mainControls = useAnimation();
 
   useEffect(() => {
@@ -23,12 +23,19 @@ export const Reveal: React.FC<RevealProps> = ({ children, width = "fit-content",
     <div ref={ref} style={{ position: "relative", width }} className={className}>
       <motion.div
         variants={{
-          hidden: { opacity: 0, y: 75, filter: "blur(10px)" },
+          hidden: { opacity: 0, y: 50, scale: 0.95, filter: "blur(8px)" },
           visible: { 
             opacity: 1, 
             y: 0, 
+            scale: 1,
             filter: "blur(0px)",
-            transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: delay } // Cinematic Easing
+            transition: { 
+                type: "spring",
+                damping: 20,
+                stiffness: 100,
+                mass: 0.8,
+                delay: delay 
+            }
           },
         }}
         initial="hidden"

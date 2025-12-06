@@ -11,6 +11,7 @@ import { Contact } from './pages/Contact';
 import { Licensing } from './pages/Licensing';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
+import { Services } from './pages/Services';
 import { ScrollToTop } from './components/ScrollToTop';
 
 const App: React.FC = () => {
@@ -24,6 +25,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/music" element={<Music />} />
               <Route path="/beats" element={<Beats />} />
+              <Route path="/services" element={<Services />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/licensing" element={<Licensing />} />

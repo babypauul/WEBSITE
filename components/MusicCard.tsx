@@ -17,9 +17,9 @@ export const MusicCard: React.FC<MusicCardProps> = ({ track }) => {
     <motion.div 
       className="group relative bg-[#0A0A0A] rounded-2xl overflow-hidden border border-white/5 cursor-pointer h-full flex flex-col shadow-lg"
       whileHover={{ 
-        y: -12,
-        scale: 1.02,
-        boxShadow: "0 25px 50px -12px rgba(225, 6, 0, 0.25)",
+        y: -8,
+        scale: 1.01,
+        boxShadow: "0 20px 40px -10px rgba(225, 6, 0, 0.3)",
         borderColor: "rgba(225, 6, 0, 0.4)"
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -42,12 +42,12 @@ export const MusicCard: React.FC<MusicCardProps> = ({ track }) => {
           <motion.div 
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-colors ${isActuallyPlaying ? 'bg-brand-red text-white' : 'bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-brand-red hover:border-brand-red'}`}
+            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-colors ${isActuallyPlaying ? 'bg-brand-red text-white box-glow' : 'bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-brand-red hover:border-brand-red hover:shadow-[0_0_20px_rgba(225,6,0,0.5)]'}`}
           >
             {isActuallyPlaying ? (
-              <Pause size={28} fill="currentColor" />
+              <Pause size={24} fill="currentColor" />
             ) : (
-              <Play size={28} fill="currentColor" className="ml-1" />
+              <Play size={24} fill="currentColor" className="ml-1" />
             )}
           </motion.div>
         </div>
@@ -57,7 +57,7 @@ export const MusicCard: React.FC<MusicCardProps> = ({ track }) => {
       <div className="p-6 relative flex-grow flex flex-col justify-between bg-gradient-to-b from-[#0F0F0F] to-[#050505]">
         <div>
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-white font-bold text-xl leading-tight group-hover:text-brand-red transition-colors duration-300 line-clamp-1">{track.title}</h3>
+            <h3 className="text-white font-bold text-lg leading-tight group-hover:text-brand-red transition-colors duration-300 line-clamp-1 text-glow">{track.title}</h3>
           </div>
           <p className="text-brand-gray font-medium text-sm mb-3 group-hover:text-white transition-colors duration-300">{track.artist}</p>
           <p className="text-brand-gray/50 text-xs line-clamp-2 mb-4 font-light leading-relaxed group-hover:text-brand-gray transition-colors">
@@ -75,7 +75,7 @@ export const MusicCard: React.FC<MusicCardProps> = ({ track }) => {
             <a 
               href={track.spotifyUrl}
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center text-[10px] font-bold text-brand-gray hover:text-white transition-colors uppercase tracking-widest"
+              className="inline-flex items-center text-[10px] font-bold text-brand-gray hover:text-white transition-colors uppercase tracking-widest hover:text-glow"
             >
               Spotify <ExternalLink size={10} className="ml-1" />
             </a>

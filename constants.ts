@@ -1,13 +1,13 @@
 import { Track, NavigationItem } from './types';
 
-// Placeholder audio URL for demonstration purposes since we don't have local files
+// Placeholder audio URL
 const DEMO_AUDIO = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; 
 
 export const NAVIGATION: NavigationItem[] = [
   { label: 'Home', path: '/' },
+  { label: 'Studio', path: '/services' },
   { label: 'Music', path: '/music' },
   { label: 'Beats', path: '/beats' },
-  { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
 
@@ -16,7 +16,7 @@ export const MUSIC_DATA: Track[] = [
     id: 'm1',
     title: 'Neon Nights',
     artist: 'Babypauul',
-    cover: 'https://picsum.photos/400/400?grayscale&random=1',
+    cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop',
     audioSrc: DEMO_AUDIO,
     releaseDate: '2023-10-24',
     description: 'A dark synthwave track exploring the depths of the city.',
@@ -27,7 +27,7 @@ export const MUSIC_DATA: Track[] = [
     id: 'm2',
     title: 'Red Horizon',
     artist: 'Babypauul',
-    cover: 'https://picsum.photos/400/400?grayscale&random=2',
+    cover: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop',
     audioSrc: DEMO_AUDIO,
     releaseDate: '2023-11-01',
     description: 'Cinematic ambient soundscapes.',
@@ -38,7 +38,7 @@ export const MUSIC_DATA: Track[] = [
     id: 'm3',
     title: 'Void',
     artist: 'Babypauul',
-    cover: 'https://picsum.photos/400/400?grayscale&random=3',
+    cover: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop',
     audioSrc: DEMO_AUDIO,
     releaseDate: '2023-12-15',
     description: 'Heavy bass experimental production.',
@@ -52,7 +52,6 @@ export const BEAT_DATA: Track[] = [
     id: 'b1',
     title: 'MIDNIGHT TOKYO',
     artist: 'Babypauul',
-    // Dark Studio / Mixing Console
     cover: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1000&auto=format&fit=crop', 
     audioSrc: DEMO_AUDIO,
     type: 'beat',
@@ -63,7 +62,6 @@ export const BEAT_DATA: Track[] = [
     id: 'b2',
     title: 'COLD BLOOD',
     artist: 'Babypauul',
-    // Dark Vinyl / Analog Texture - Colder vibe
     cover: 'https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?q=80&w=1000&auto=format&fit=crop', 
     audioSrc: DEMO_AUDIO,
     type: 'beat',
@@ -74,7 +72,6 @@ export const BEAT_DATA: Track[] = [
     id: 'b3',
     title: 'VENDETTA',
     artist: 'Babypauul',
-    // Moody Dark Red Abstract / Lighting
     cover: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f98?q=80&w=1000&auto=format&fit=crop', 
     audioSrc: DEMO_AUDIO,
     type: 'beat',
@@ -85,7 +82,6 @@ export const BEAT_DATA: Track[] = [
     id: 'b4',
     title: 'PHANTOM',
     artist: 'Babypauul',
-    // Synthesizer Keys dark
     cover: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1000&auto=format&fit=crop', 
     audioSrc: DEMO_AUDIO,
     type: 'beat',
