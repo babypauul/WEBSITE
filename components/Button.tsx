@@ -34,20 +34,20 @@ export const Button: React.FC<ButtonProps> = ({
   const variants = {
     primary: `
       text-white
-      bg-brand-red/80
+      bg-brand-red/90
       border border-white/10
       backdrop-blur-xl
       shadow-[0_8px_32px_rgba(225,6,0,0.25)]
     `,
     outline: `
-      text-white
-      bg-white/5
-      border border-white/10
+      text-brand-black dark:text-white
+      bg-black/5 dark:bg-white/5
+      border border-black/10 dark:border-white/10
       backdrop-blur-md
-      shadow-[0_8px_32px_rgba(0,0,0,0.1)]
+      shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.1)]
       hover:border-brand-red/30
     `,
-    ghost: "text-brand-gray hover:text-white hover:bg-white/5 backdrop-blur-sm"
+    ghost: "text-brand-gray hover:text-brand-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 backdrop-blur-sm"
   };
 
   return (

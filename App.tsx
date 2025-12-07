@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { PlayerProvider } from './context/PlayerContext';
 import { CartProvider } from './context/CartContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Home } from './pages/Home';
 import { Music } from './pages/Music';
 import { Beats } from './pages/Beats';
@@ -16,26 +17,28 @@ import { ScrollToTop } from './components/ScrollToTop';
 
 const App: React.FC = () => {
   return (
-    <PlayerProvider>
-      <CartProvider>
-        <HashRouter>
-          <ScrollToTop />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/music" element={<Music />} />
-              <Route path="/beats" element={<Beats />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/licensing" element={<Licensing />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-            </Routes>
-          </Layout>
-        </HashRouter>
-      </CartProvider>
-    </PlayerProvider>
+    <ThemeProvider>
+      <PlayerProvider>
+        <CartProvider>
+          <HashRouter>
+            <ScrollToTop />
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/music" element={<Music />} />
+                <Route path="/beats" element={<Beats />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/licensing" element={<Licensing />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+              </Routes>
+            </Layout>
+          </HashRouter>
+        </CartProvider>
+      </PlayerProvider>
+    </ThemeProvider>
   );
 };
 

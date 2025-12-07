@@ -28,7 +28,7 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
       onClick={() => playTrack(beat)}
     >
       {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#111] shadow-2xl group-hover:shadow-[0_0_30px_rgba(225,6,0,0.3)] transition-shadow duration-500">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-[#111] shadow-2xl dark:shadow-none group-hover:shadow-[0_0_30px_rgba(225,6,0,0.3)] transition-all duration-500 border border-transparent dark:border-white/5">
         <motion.img
           src={beat.cover}
           alt={beat.title}
@@ -41,7 +41,7 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
         />
 
         {/* Cinematic Noise/Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 dark:opacity-80 transition-opacity" />
         <div className="absolute inset-0 bg-brand-red/0 group-hover:bg-brand-red/10 transition-colors duration-500 mix-blend-overlay" />
         
         {/* Play Button */}
@@ -82,21 +82,21 @@ export const BeatCard: React.FC<BeatCardProps> = ({ beat }) => {
 
       {/* Details */}
       <div className="mt-4 flex flex-col gap-1 px-1">
-        <div className="flex items-end justify-between border-b border-white/10 pb-2 mb-2">
-           <h3 className="text-lg font-black uppercase tracking-tighter text-white group-hover:text-brand-red transition-colors duration-300 line-clamp-1 text-glow">
+        <div className="flex items-end justify-between border-b border-black/5 dark:border-white/10 pb-2 mb-2">
+           <h3 className="text-lg font-black uppercase tracking-tighter text-brand-black dark:text-white group-hover:text-brand-red transition-colors duration-300 line-clamp-1 text-glow dark:text-glow">
              {beat.title}
            </h3>
            <span className="font-mono text-base font-bold text-brand-red tracking-tight">${beat.price}</span>
         </div>
         <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-800 dark:group-hover:text-neutral-300 transition-colors">
                 <span>{beat.description?.split('•')[0] || 'Trap'}</span>
                 <span className="text-brand-red">•</span>
                 <span>{beat.description?.split('•')[1] || '140 BPM'}</span>
             </div>
             <button 
                 onClick={handleAddToCart}
-                className="text-[9px] font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors flex items-center gap-1"
+                className="text-[9px] font-bold uppercase tracking-widest text-brand-black/50 dark:text-white/50 hover:text-brand-red dark:hover:text-white transition-colors flex items-center gap-1"
             >
                 <ShoppingCart size={10} /> Buy
             </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { Menu, X, Instagram, Twitter, Youtube, Mail, ChevronUp, ArrowRight, ShoppingCart } from 'lucide-react';
+import { Menu, X, Instagram, Twitter, Youtube, Mail, ChevronUp, ArrowRight, ShoppingCart, Sun, Moon } from 'lucide-react';
 import { NAVIGATION } from '../constants';
 import { Player } from './Player';
 import { usePlayer } from '../context/PlayerContext';
@@ -11,12 +11,14 @@ import { ActiveBackground } from './ActiveBackground';
 import { CookieBanner } from './CookieBanner';
 import { CartDrawer } from './CartDrawer';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { currentTrack } = usePlayer();
   const { cart, toggleCart } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   
   const [scrolled, setScrolled] = useState(false);
@@ -38,7 +40,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col relative overflow-hidden bg-[#050505]"
+      className="min-h-screen flex flex-col relative overflow-hidden bg-brand-light dark:bg-[#050505] transition-colors duration-500"
       style={{
         paddingBottom: currentTrack ? 'calc(100px + env(safe-area-inset-bottom))' : 'env(safe-area-inset-bottom)'
       }}
@@ -53,7 +55,11 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 w-full z-[60] transition-all duration-500 ${scrolled ? 'bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/5 py-2' : 'bg-transparent py-6'}`}
+        className={`fixed top-0 w-full z-[60] transition-all duration-500 ${
+          scrolled 
+            ? 'bg-white/80 dark:bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5 py-2 shadow-sm dark:shadow-none' 
+            : 'bg-transparent py-6'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -63,10 +69,10 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex flex-col z-50 group cursor-hover"
             >
-                <span className="text-xl font-black tracking-tighter text-brand-red leading-none drop-shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all duration-500 group-hover:text-white group-hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.6)]">
+                <span className="text-xl font-black tracking-tighter text-brand-red leading-none drop-shadow-[0_0_20px_rgba(225,6,0,0.4)] transition-all duration-500 group-hover:text-brand-black dark:group-hover:text-white group-hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.6)]">
                   BABYPAUUL
                 </span>
-                <span className="text-[0.6rem] font-bold uppercase tracking-[0.35em] text-white leading-none mt-1 group-hover:text-brand-red transition-colors duration-300">
+                <span className="text-[0.6rem] font-bold uppercase tracking-[0.35em] text-brand-black dark:text-white leading-none mt-1 group-hover:text-brand-red transition-colors duration-300">
                   PRODUCER
                 </span>
             </Link>
@@ -79,7 +85,9 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                   to={item.path}
                   className={({ isActive }) =>
                     `relative text-[10px] font-bold uppercase tracking-[0.2em] transition-colors py-2 cursor-hover ${
-                      isActive ? 'text-white' : 'text-brand-gray/60 hover:text-white'
+                      isActive 
+                        ? 'text-brand-black dark:text-white' 
+                        : 'text-brand-gray/60 hover:text-brand-black dark:hover:text-white'
                     }`
                   }
                 >
@@ -87,10 +95,19 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                 </NavLink>
               ))}
 
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="text-brand-gray hover:text-brand-black dark:hover:text-white transition-colors cursor-hover p-2"
+                title="Toggle Theme"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
               {/* Cart Button */}
               <button 
                 onClick={toggleCart}
-                className="relative group text-brand-gray hover:text-white transition-colors cursor-hover p-2"
+                className="relative group text-brand-gray hover:text-brand-black dark:hover:text-white transition-colors cursor-hover p-2"
               >
                 <ShoppingCart size={20} />
                 {cart.length > 0 && (
@@ -101,9 +118,12 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
               </button>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Actions */}
             <div className="md:hidden flex items-center gap-6">
-              <button onClick={toggleCart} className="relative group text-brand-gray hover:text-white transition-colors">
+              <button onClick={toggleTheme} className="text-brand-gray hover:text-brand-black dark:hover:text-white transition-colors p-2">
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button onClick={toggleCart} className="relative group text-brand-gray hover:text-brand-black dark:hover:text-white transition-colors">
                   <ShoppingCart size={20} />
                   {cart.length > 0 && (
                     <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-red text-white text-[9px] font-bold flex items-center justify-center rounded-full">
@@ -111,7 +131,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                     </span>
                   )}
               </button>
-              <button onClick={toggleMenu} className="text-white p-2">
+              <button onClick={toggleMenu} className="text-brand-black dark:text-white p-2">
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
@@ -125,7 +145,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/10 overflow-hidden relative z-[60]"
+              className="md:hidden bg-white/95 dark:bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-black/5 dark:border-white/10 overflow-hidden relative z-[60]"
             >
               <div className="px-4 pt-4 pb-8 space-y-2">
                 {NAVIGATION.map((item) => (
@@ -136,8 +156,8 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                     className={({ isActive }) => 
                       `block px-4 py-4 text-lg font-bold uppercase tracking-widest border-l-2 transition-all ${
                         isActive 
-                          ? 'text-brand-red bg-white/5 border-brand-red' 
-                          : 'border-transparent text-brand-gray hover:text-white hover:border-white/20'
+                          ? 'text-brand-red bg-black/5 dark:bg-white/5 border-brand-red' 
+                          : 'border-transparent text-brand-gray hover:text-brand-black dark:hover:text-white hover:border-black/10 dark:hover:border-white/20'
                       }`
                     }
                   >
@@ -167,15 +187,15 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       </main>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-[#050505]/80 backdrop-blur-lg pt-20 pb-10 border-t border-white/5 relative overflow-hidden z-10">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <footer className="bg-white/50 dark:bg-[#050505]/80 backdrop-blur-lg pt-20 pb-10 border-t border-black/5 dark:border-white/5 relative overflow-hidden z-10 transition-colors duration-500">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-black/10 dark:via-white/10 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
               {/* Brand */}
               <div className="md:col-span-4">
                 <Link to="/" className="flex flex-col gap-1 mb-6 w-fit group">
-                   <span className="text-2xl font-black tracking-tighter text-white leading-none group-hover:text-brand-red transition-colors">BABYPAUUL</span>
+                   <span className="text-2xl font-black tracking-tighter text-brand-black dark:text-white leading-none group-hover:text-brand-red transition-colors">BABYPAUUL</span>
                    <span className="text-[0.6rem] uppercase tracking-[0.3em] text-brand-gray/50 leading-none">Killstreet Studio</span>
                 </Link>
                 <p className="text-brand-gray text-sm leading-relaxed mb-6 max-w-sm">
@@ -186,7 +206,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                     <a 
                       key={idx}
                       href="#" 
-                      className="text-brand-gray hover:text-white transition-all duration-300 hover:scale-110 bg-white/5 p-3 rounded-full cursor-hover hover:bg-brand-red hover:shadow-[0_0_15px_rgba(225,6,0,0.5)]"
+                      className="text-brand-gray hover:text-brand-black dark:hover:text-white transition-all duration-300 hover:scale-110 bg-black/5 dark:bg-white/5 p-3 rounded-full cursor-hover hover:bg-brand-red dark:hover:bg-brand-red hover:shadow-[0_0_15px_rgba(225,6,0,0.5)]"
                     >
                       <Icon size={18} />
                     </a>
@@ -196,7 +216,7 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
               {/* Links */}
               <div className="md:col-span-3 md:col-start-6">
-                 <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Explore</h4>
+                 <h4 className="text-brand-black dark:text-white font-bold uppercase tracking-widest text-xs mb-6">Explore</h4>
                  <ul className="space-y-4">
                     {NAVIGATION.map(item => (
                        <li key={item.path}>
@@ -217,31 +237,31 @@ export const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
               {/* Newsletter */}
               <div className="md:col-span-4">
-                 <h4 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Stay Updated</h4>
+                 <h4 className="text-brand-black dark:text-white font-bold uppercase tracking-widest text-xs mb-6">Stay Updated</h4>
                  <p className="text-brand-gray text-xs mb-4">Get exclusive beats and discounts directly to your inbox.</p>
                  <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
                     <div className="relative">
                        <input 
                          type="email" 
                          placeholder="Enter your email" 
-                         className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all placeholder-white/20 cursor-hover"
+                         className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded px-4 py-3 text-brand-black dark:text-white text-sm focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all placeholder-brand-gray/50 cursor-hover"
                        />
                     </div>
-                    <Button variant="outline" className="w-full py-3 text-xs border-white/20 hover:border-brand-red hover:bg-brand-red/10">
+                    <Button variant="outline" className="w-full py-3 text-xs border-black/10 dark:border-white/20 hover:border-brand-red hover:bg-brand-red/10 text-brand-black dark:text-white">
                        Subscribe <ArrowRight size={14} className="ml-2" />
                     </Button>
                  </form>
               </div>
            </div>
 
-           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+           <div className="border-t border-black/5 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-brand-gray/50 text-xs font-mono">
                 &copy; {new Date().getFullYear()} Babypauul. All rights reserved.
               </p>
               <div className="flex gap-6 text-xs text-brand-gray/50 font-mono">
-                 <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                 <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-                 <Link to="/licensing" className="hover:text-white transition-colors">Licensing Info</Link>
+                 <Link to="/privacy" className="hover:text-brand-black dark:hover:text-white transition-colors">Privacy Policy</Link>
+                 <Link to="/terms" className="hover:text-brand-black dark:hover:text-white transition-colors">Terms of Service</Link>
+                 <Link to="/licensing" className="hover:text-brand-black dark:hover:text-white transition-colors">Licensing Info</Link>
               </div>
            </div>
         </div>
