@@ -6,11 +6,20 @@ interface RevealProps {
   width?: "fit-content" | "100%";
   delay?: number;
   className?: string;
+  direction?: "up" | "down" | "left" | "right";
+  distance?: number;
 }
 
-export const Reveal: React.FC<RevealProps> = ({ children, width = "fit-content", delay = 0.1, className = "" }) => {
+export const Reveal: React.FC<RevealProps> = ({ 
+  children, 
+  width = "fit-content", 
+  delay = 0.1, 
+  className = "",
+  direction = "up",
+  distance = 30
+}) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
   const mainControls = useAnimation();
 
   useEffect(() => {
@@ -19,25 +28,32 @@ export const Reveal: React.FC<RevealProps> = ({ children, width = "fit-content",
     }
   }, [isInView, mainControls]);
 
+  const variants = {
+    hidden: { 
+      opacity: 0, 
+      y: direction === "up" ? distance : direction === "down" ? -distance : 0,
+      x: direction === "left" ? distance : direction === "right" ? -distance : 0,
+      filter: "blur(8px)",
+      scale: 0.98
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      x: 0,
+      filter: "blur(0px)",
+      scale: 1,
+      transition: { 
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1], // Cinematic Easing
+        delay: delay 
+      }
+    },
+  };
+
   return (
     <div ref={ref} style={{ position: "relative", width }} className={className}>
       <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 50, scale: 0.95, filter: "blur(8px)" },
-          visible: { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1,
-            filter: "blur(0px)",
-            transition: { 
-                type: "spring",
-                damping: 20,
-                stiffness: 100,
-                mass: 0.8,
-                delay: delay 
-            }
-          },
-        }}
+        variants={variants}
         initial="hidden"
         animate={mainControls}
       >

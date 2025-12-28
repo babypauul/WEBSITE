@@ -6,10 +6,18 @@ const DEMO_AUDIO = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp
 export const NAVIGATION: NavigationItem[] = [
   { label: 'Home', path: '/' },
   { label: 'Studio', path: '/services' },
+  { label: 'AI Studio', path: '/ai-studio' },
   { label: 'Music', path: '/music' },
   { label: 'Beats', path: '/beats' },
   { label: 'Contact', path: '/contact' },
 ];
+
+export const SOCIALS = {
+  instagram: "https://www.instagram.com/killstreetstudios",
+  spotify: "https://open.spotify.com/artist/7IbqNeOivzHYdXD7J6uHSq",
+  beatstars: "https://www.beatstars.com/xbabypauul",
+  management: "management@babypauul.com"
+};
 
 export const MUSIC_DATA: Track[] = [
   {
@@ -21,7 +29,7 @@ export const MUSIC_DATA: Track[] = [
     releaseDate: '2023-10-24',
     description: 'A dark synthwave track exploring the depths of the city.',
     type: 'song',
-    spotifyUrl: '#',
+    spotifyUrl: 'https://open.spotify.com/artist/7IbqNeOivzHYdXD7J6uHSq',
   },
   {
     id: 'm2',
@@ -32,7 +40,7 @@ export const MUSIC_DATA: Track[] = [
     releaseDate: '2023-11-01',
     description: 'Cinematic ambient soundscapes.',
     type: 'song',
-    spotifyUrl: '#',
+    spotifyUrl: 'https://open.spotify.com/artist/7IbqNeOivzHYdXD7J6uHSq',
   },
   {
     id: 'm3',
@@ -43,7 +51,7 @@ export const MUSIC_DATA: Track[] = [
     releaseDate: '2023-12-15',
     description: 'Heavy bass experimental production.',
     type: 'song',
-    spotifyUrl: '#',
+    spotifyUrl: 'https://open.spotify.com/artist/7IbqNeOivzHYdXD7J6uHSq',
   }
 ];
 

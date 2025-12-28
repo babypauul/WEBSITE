@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BeatCard } from '../components/BeatCard';
-import { BEAT_DATA } from '../constants';
+import { BeatCard } from '../components/BeatCard.tsx';
+import { BEAT_DATA } from '../constants.ts';
 import { ShoppingCart, Loader2 } from 'lucide-react';
-import { Track } from '../types';
+import { Track } from '../types.ts';
 
 export const Beats: React.FC = () => {
   const [beats, setBeats] = useState<Track[]>(BEAT_DATA);

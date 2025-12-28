@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Plus, ShoppingCart, BarChart2 } from 'lucide-react';
-import { Track } from '../types';
-import { usePlayer } from '../context/PlayerContext';
-import { useCart } from '../context/CartContext';
+import { Track } from '../types.ts';
+import { usePlayer } from '../context/PlayerContext.tsx';
+import { useCart } from '../context/CartContext.tsx';
 
 interface BeatCardProps {
   beat: Track;
